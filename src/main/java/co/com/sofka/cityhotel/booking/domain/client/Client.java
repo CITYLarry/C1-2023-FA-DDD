@@ -9,7 +9,9 @@ import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientIdentifi
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientName;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
 import co.com.sofka.cityhotel.booking.domain.generic.AggregateRoot;
+import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;
 
+import java.util.List;
 import java.util.Set;
 
 public class Client extends AggregateRoot<ClientId> {
@@ -35,6 +37,12 @@ public class Client extends AggregateRoot<ClientId> {
         super(clientId);
         subscribe(new ClientBehavior(this));
         appendChange(new CreatedClient(clientName, clientEmail, clientIdentification, address, creditCard)).apply();
+    }
+
+    public static Client from(ClientId clientId, List<DomainEvent> events) {
+        Client client = new Client(clientId);
+        events.forEach(client::applyEvent);
+        return client;
     }
 
 

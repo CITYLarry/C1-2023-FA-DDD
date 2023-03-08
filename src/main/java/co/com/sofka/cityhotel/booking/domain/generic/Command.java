@@ -1,4 +1,4 @@
-package co.com.sofka.ramirez.larry.cityairlines.booking.domain.generic;
+package co.com.sofka.cityhotel.booking.domain.generic;
 
 import java.time.Instant;
 import java.util.UUID;

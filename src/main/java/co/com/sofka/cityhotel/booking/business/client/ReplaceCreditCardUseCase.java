@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ReplaceCreditCardUseCase implements CommandUseCase<ReplaceCreditCardCommand> {
 
-    private EventsRepository eventsRepository;
+    private final EventsRepository eventsRepository;
 
     public ReplaceCreditCardUseCase(EventsRepository eventsRepository) {
         this.eventsRepository = eventsRepository;

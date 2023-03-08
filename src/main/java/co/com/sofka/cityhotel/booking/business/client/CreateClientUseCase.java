@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CreateClientUseCase implements CommandUseCase<CreateClientCommand> {
 
-    private EventsRepository eventsRepository;
+    private final EventsRepository eventsRepository;
 
     public CreateClientUseCase(EventsRepository eventsRepository) {
         this.eventsRepository = eventsRepository;

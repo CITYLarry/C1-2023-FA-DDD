@@ -6,6 +6,7 @@ import co.com.sofka.cityhotel.booking.domain.client.entities.Guest;
 import co.com.sofka.cityhotel.booking.domain.client.events.AddedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
 import co.com.sofka.cityhotel.booking.domain.client.events.ModifiedAddress;
+import co.com.sofka.cityhotel.booking.domain.client.events.RemovedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.values.address.AddressValue;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientEmail;
@@ -81,6 +82,11 @@ public class Client extends AggregateRoot<ClientId> {
         Objects.requireNonNull(guestEmail);
         Objects.requireNonNull(clientId);
         appendChange(new AddedGuest(guestId, guestName, guestEmail, clientId)).apply();
+    }
+
+    public void removeGuest(GuestId guestId) {
+        Objects.requireNonNull(guestId);
+        appendChange(new RemovedGuest(guestId)).apply();
     }
 
     //Getters methods

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AddGuestUseCase implements CommandUseCase<AddGuestCommand> {
 
-    private EventsRepository eventsRepository;
+    private final EventsRepository eventsRepository;
 
     public AddGuestUseCase(EventsRepository eventsRepository) {
         this.eventsRepository = eventsRepository;

@@ -5,6 +5,7 @@ import co.com.sofka.cityhotel.booking.domain.client.entities.Guest;
 import co.com.sofka.cityhotel.booking.domain.client.events.AddedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
 import co.com.sofka.cityhotel.booking.domain.client.events.ModifiedAddress;
+import co.com.sofka.cityhotel.booking.domain.client.events.RemovedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
 import co.com.sofka.cityhotel.booking.domain.generic.EventChange;
 
@@ -35,12 +36,16 @@ public class ClientBehavior extends EventChange {
            client.address.updateAddressValue(event.getAddressValue());
         });
 
-        apply(((AddedGuest event) -> {
+        apply((AddedGuest event) -> {
             client.guestSet.add(Guest.from(
                     event.getGuestId(),
                     event.getGuestName(),
                     event.getGuestEmail()
             ));
-        }));
+        });
+
+        apply((RemovedGuest event) -> {
+            client.guestSet.removeIf(guest -> guest.identity().value().equals(event.getGuestId().value()));
+        });
     }
 }

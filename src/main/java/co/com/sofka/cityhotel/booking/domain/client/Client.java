@@ -4,14 +4,20 @@ import co.com.sofka.cityhotel.booking.domain.client.entities.Address;
 import co.com.sofka.cityhotel.booking.domain.client.entities.CreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.entities.Guest;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
+import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientEmail;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientIdentification;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientName;
+import co.com.sofka.cityhotel.booking.domain.client.values.creditcard.CreditCardCcv;
+import co.com.sofka.cityhotel.booking.domain.client.values.creditcard.CreditCardExpDate;
+import co.com.sofka.cityhotel.booking.domain.client.values.creditcard.CreditCardNumber;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
+import co.com.sofka.cityhotel.booking.domain.client.values.identities.CreditCardId;
 import co.com.sofka.cityhotel.booking.domain.generic.AggregateRoot;
 import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class Client extends AggregateRoot<ClientId> {
@@ -45,6 +51,17 @@ public class Client extends AggregateRoot<ClientId> {
         return client;
     }
 
+    public void replaceCreditCard(CreditCardId creditCardId,
+                                  CreditCardNumber creditCardNumber,
+                                  CreditCardExpDate creditCardExpDate,
+                                  CreditCardCcv creditCardCcv,
+                                  ClientId clientId) {
+        Objects.requireNonNull(creditCardId);
+        Objects.requireNonNull(creditCardNumber);
+        Objects.requireNonNull(creditCardExpDate);
+        Objects.requireNonNull(creditCardCcv);
+        appendChange(new ReplacedCreditCard(creditCardId, creditCardNumber, creditCardExpDate, creditCardCcv, clientId)).apply();
+    }
 
     //Getters methods
     public String clientName() {

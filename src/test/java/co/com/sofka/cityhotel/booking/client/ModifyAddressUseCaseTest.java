@@ -7,7 +7,6 @@ import co.com.sofka.cityhotel.booking.domain.client.commands.CreateClientCommand
 import co.com.sofka.cityhotel.booking.domain.client.commands.ModifyAddressCommand;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
 import co.com.sofka.cityhotel.booking.domain.client.events.ModifiedAddress;
-import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.values.address.AddressValue;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
 import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;

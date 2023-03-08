@@ -1,6 +1,8 @@
 package co.com.sofka.cityhotel.booking.domain.client;
 
 import co.com.sofka.cityhotel.booking.domain.client.entities.CreditCard;
+import co.com.sofka.cityhotel.booking.domain.client.entities.Guest;
+import co.com.sofka.cityhotel.booking.domain.client.events.AddedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
 import co.com.sofka.cityhotel.booking.domain.client.events.ModifiedAddress;
 import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
@@ -32,5 +34,13 @@ public class ClientBehavior extends EventChange {
         apply((ModifiedAddress event) -> {
            client.address.updateAddressValue(event.getAddressValue());
         });
+
+        apply(((AddedGuest event) -> {
+            client.guestSet.add(Guest.from(
+                    event.getGuestId(),
+                    event.getGuestName(),
+                    event.getGuestEmail()
+            ));
+        }));
     }
 }

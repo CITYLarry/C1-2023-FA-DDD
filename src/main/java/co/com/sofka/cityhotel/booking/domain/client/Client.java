@@ -3,6 +3,7 @@ package co.com.sofka.cityhotel.booking.domain.client;
 import co.com.sofka.cityhotel.booking.domain.client.entities.Address;
 import co.com.sofka.cityhotel.booking.domain.client.entities.CreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.entities.Guest;
+import co.com.sofka.cityhotel.booking.domain.client.events.AddedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
 import co.com.sofka.cityhotel.booking.domain.client.events.ModifiedAddress;
 import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
@@ -13,8 +14,11 @@ import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientName;
 import co.com.sofka.cityhotel.booking.domain.client.values.creditcard.CreditCardCcv;
 import co.com.sofka.cityhotel.booking.domain.client.values.creditcard.CreditCardExpDate;
 import co.com.sofka.cityhotel.booking.domain.client.values.creditcard.CreditCardNumber;
+import co.com.sofka.cityhotel.booking.domain.client.values.guest.GuestEmail;
+import co.com.sofka.cityhotel.booking.domain.client.values.guest.GuestName;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.CreditCardId;
+import co.com.sofka.cityhotel.booking.domain.client.values.identities.GuestId;
 import co.com.sofka.cityhotel.booking.domain.generic.AggregateRoot;
 import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;
 
@@ -69,6 +73,14 @@ public class Client extends AggregateRoot<ClientId> {
         Objects.requireNonNull(address);
         Objects.requireNonNull(clientId);
         appendChange(new ModifiedAddress(address, clientId)).apply();
+    }
+
+    public void addGuest(GuestId guestId, GuestName guestName, GuestEmail guestEmail, ClientId clientId) {
+        Objects.requireNonNull(guestId);
+        Objects.requireNonNull(guestName);
+        Objects.requireNonNull(guestEmail);
+        Objects.requireNonNull(clientId);
+        appendChange(new AddedGuest(guestId, guestName, guestEmail, clientId)).apply();
     }
 
     //Getters methods

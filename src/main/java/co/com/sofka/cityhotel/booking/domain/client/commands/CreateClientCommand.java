@@ -11,7 +11,9 @@ public class CreateClientCommand extends Command {
     private String clientName;
     private String clientEmail;
     private String clientIdentification;
+    private String addressId;
     private String address;
+    private String creditCardId;
     private String creditCardNumber;
     private LocalDate creditCardExpDate;
     private Integer creditCardCcv;
@@ -22,7 +24,9 @@ public class CreateClientCommand extends Command {
                                String clientName,
                                String clientEmail,
                                String clientIdentification,
+                               String addressId,
                                String address,
+                               String creditCardId,
                                String creditCardNumber,
                                LocalDate creditCardExpDate,
                                Integer creditCardCcv) {
@@ -30,7 +34,9 @@ public class CreateClientCommand extends Command {
         this.clientName = clientName;
         this.clientEmail = clientEmail;
         this.clientIdentification = clientIdentification;
+        this.addressId = addressId;
         this.address = address;
+        this.creditCardId = creditCardId;
         this.creditCardNumber = creditCardNumber;
         this.creditCardExpDate = creditCardExpDate;
         this.creditCardCcv = creditCardCcv;
@@ -68,12 +74,28 @@ public class CreateClientCommand extends Command {
         this.clientIdentification = clientIdentification;
     }
 
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCreditCardId() {
+        return creditCardId;
+    }
+
+    public void setCreditCardId(String creditCardId) {
+        this.creditCardId = creditCardId;
     }
 
     public String getCreditCardNumber() {

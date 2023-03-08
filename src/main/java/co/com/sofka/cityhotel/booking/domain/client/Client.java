@@ -4,7 +4,9 @@ import co.com.sofka.cityhotel.booking.domain.client.entities.Address;
 import co.com.sofka.cityhotel.booking.domain.client.entities.CreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.entities.Guest;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
+import co.com.sofka.cityhotel.booking.domain.client.events.ModifiedAddress;
 import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
+import co.com.sofka.cityhotel.booking.domain.client.values.address.AddressValue;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientEmail;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientIdentification;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientName;
@@ -61,6 +63,12 @@ public class Client extends AggregateRoot<ClientId> {
         Objects.requireNonNull(creditCardExpDate);
         Objects.requireNonNull(creditCardCcv);
         appendChange(new ReplacedCreditCard(creditCardId, creditCardNumber, creditCardExpDate, creditCardCcv, clientId)).apply();
+    }
+
+    public void modifyAddress(AddressValue address, ClientId clientId){
+        Objects.requireNonNull(address);
+        Objects.requireNonNull(clientId);
+        appendChange(new ModifiedAddress(address, clientId)).apply();
     }
 
     //Getters methods

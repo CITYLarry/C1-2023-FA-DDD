@@ -13,6 +13,7 @@ public class ReplaceCreditCardCommand extends Command {
     private String clientId;
 
     private ReplaceCreditCardCommand() {}
+
     public ReplaceCreditCardCommand(String creditCardId,
                                     String creditCardNumber,
                                     LocalDate creditCardExpDate,

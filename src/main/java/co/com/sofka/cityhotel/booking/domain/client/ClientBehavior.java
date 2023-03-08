@@ -2,6 +2,7 @@ package co.com.sofka.cityhotel.booking.domain.client;
 
 import co.com.sofka.cityhotel.booking.domain.client.entities.CreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
+import co.com.sofka.cityhotel.booking.domain.client.events.ModifiedAddress;
 import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
 import co.com.sofka.cityhotel.booking.domain.generic.EventChange;
 
@@ -26,6 +27,10 @@ public class ClientBehavior extends EventChange {
                    event.getCreditCardExpDate(),
                    event.getCreditCardCcv()
            );
+        });
+
+        apply((ModifiedAddress event) -> {
+           client.address.updateAddressValue(event.getAddressValue());
         });
     }
 }

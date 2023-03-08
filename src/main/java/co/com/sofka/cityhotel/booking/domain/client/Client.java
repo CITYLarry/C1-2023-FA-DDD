@@ -3,6 +3,7 @@ package co.com.sofka.cityhotel.booking.domain.client;
 import co.com.sofka.cityhotel.booking.domain.client.entities.Address;
 import co.com.sofka.cityhotel.booking.domain.client.entities.CreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.entities.Guest;
+import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientEmail;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientIdentification;
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientName;
@@ -23,6 +24,17 @@ public class Client extends AggregateRoot<ClientId> {
     private Client(ClientId clientId) {
         super(clientId);
         subscribe(new ClientBehavior(this));
+    }
+
+    public Client(ClientId clientId,
+                  ClientName clientName,
+                  ClientEmail clientEmail,
+                  ClientIdentification clientIdentification,
+                  Address address,
+                  CreditCard creditCard) {
+        super(clientId);
+        subscribe(new ClientBehavior(this));
+        appendChange(new CreatedClient(clientName, clientEmail, clientIdentification, address, creditCard)).apply();
     }
 
 

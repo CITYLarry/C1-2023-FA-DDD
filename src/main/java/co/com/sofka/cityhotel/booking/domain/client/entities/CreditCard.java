@@ -25,6 +25,10 @@ public class CreditCard extends Entity<CreditCardId> {
         this.creditCardCcv = creditCardCcv;
     }
 
+    public CreditCard from(CreditCardId creditCardId, CreditCardNumber creditCardNumber, CreditCardExpDate creditCardExpDate, CreditCardCcv creditCardCcv) {
+        return new CreditCard(creditCardId, creditCardNumber, creditCardExpDate, creditCardCcv);
+    }
+
     public String creditCardNumber() {
         return creditCardNumber.value();
     }

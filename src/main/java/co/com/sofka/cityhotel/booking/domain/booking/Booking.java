@@ -6,9 +6,9 @@ import co.com.sofka.cityhotel.booking.domain.booking.entities.Services;
 import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CheckOutRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
+import co.com.sofka.cityhotel.booking.domain.booking.events.HiredService;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.BookingId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.RoomId;
-import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomAvailable;
 import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomNumber;
 import co.com.sofka.cityhotel.booking.domain.booking.values.service.ServiceType;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
@@ -16,6 +16,7 @@ import co.com.sofka.cityhotel.booking.domain.generic.AggregateRoot;
 import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Booking extends AggregateRoot<BookingId> {
 
@@ -45,11 +46,19 @@ public class Booking extends AggregateRoot<BookingId> {
     }
 
     public void assignRoom(RoomId roomId, RoomNumber roomNumber) {
+        Objects.requireNonNull(roomId);
+        Objects.requireNonNull(roomNumber);
         appendChange(new AssignedRoom(roomId, roomNumber)).apply();
     }
 
     public void checkOutRoom(RoomId roomId) {
+        Objects.requireNonNull(roomId);
         appendChange(new CheckOutRoom(roomId)).apply();
+    }
+
+    public void hireService(ServiceType serviceType) {
+        Objects.requireNonNull(serviceType);
+        appendChange(new HiredService(serviceType)).apply();
     }
 
     //Getters methods

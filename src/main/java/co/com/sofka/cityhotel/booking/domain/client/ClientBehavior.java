@@ -11,7 +11,6 @@ import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
 import co.com.sofka.cityhotel.booking.domain.generic.EventChange;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class ClientBehavior extends EventChange {
 

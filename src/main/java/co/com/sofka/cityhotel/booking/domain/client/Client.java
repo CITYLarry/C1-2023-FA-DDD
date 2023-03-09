@@ -26,7 +26,6 @@ import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class Client extends AggregateRoot<ClientId> {
 

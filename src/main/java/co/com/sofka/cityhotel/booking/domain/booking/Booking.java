@@ -4,6 +4,7 @@ import co.com.sofka.cityhotel.booking.domain.booking.entities.Payment;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Room;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Services;
 import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
+import co.com.sofka.cityhotel.booking.domain.booking.events.CheckOutRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.BookingId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.RoomId;
@@ -45,6 +46,10 @@ public class Booking extends AggregateRoot<BookingId> {
 
     public void assignRoom(RoomId roomId, RoomNumber roomNumber) {
         appendChange(new AssignedRoom(roomId, roomNumber)).apply();
+    }
+
+    public void checkOutRoom(RoomId roomId) {
+        appendChange(new CheckOutRoom(roomId)).apply();
     }
 
     //Getters methods

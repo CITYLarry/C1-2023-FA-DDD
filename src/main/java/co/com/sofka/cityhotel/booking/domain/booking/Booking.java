@@ -3,8 +3,12 @@ package co.com.sofka.cityhotel.booking.domain.booking;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Payment;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Room;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Services;
+import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.BookingId;
+import co.com.sofka.cityhotel.booking.domain.booking.values.identities.RoomId;
+import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomAvailable;
+import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomNumber;
 import co.com.sofka.cityhotel.booking.domain.booking.values.service.ServiceType;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
 import co.com.sofka.cityhotel.booking.domain.generic.AggregateRoot;
@@ -37,6 +41,10 @@ public class Booking extends AggregateRoot<BookingId> {
         Booking booking = new Booking(bookingId);
         events.forEach(booking::applyEvent);
         return booking;
+    }
+
+    public void assignRoom(RoomId roomId, RoomNumber roomNumber) {
+        appendChange(new AssignedRoom(roomId, roomNumber)).apply();
     }
 
     //Getters methods

@@ -1,6 +1,9 @@
 package co.com.sofka.cityhotel.booking.domain.booking;
 
+import co.com.sofka.cityhotel.booking.domain.booking.entities.Room;
+import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
+import co.com.sofka.cityhotel.booking.domain.booking.values.identities.RoomId;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
 import co.com.sofka.cityhotel.booking.domain.generic.EventChange;
 
@@ -15,6 +18,16 @@ public class BookingBehavior extends EventChange {
             booking.roomList = new ArrayList<>();
             booking.services = event.getServices();
             booking.payment = event.getPayment();
+        });
+
+        apply((AssignedRoom event) -> {
+            booking.roomList.add(
+                    Room.from(
+                            event.getRoomId(),
+                            event.getRoomNumber(),
+                            event.getRoomAvailable()
+                    )
+            );
         });
     }
 

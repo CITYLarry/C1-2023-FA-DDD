@@ -4,11 +4,13 @@ import co.com.sofka.cityhotel.booking.domain.client.entities.CreditCard;
 import co.com.sofka.cityhotel.booking.domain.client.entities.Guest;
 import co.com.sofka.cityhotel.booking.domain.client.events.AddedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient;
+import co.com.sofka.cityhotel.booking.domain.client.events.EditedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.ModifiedAddress;
 import co.com.sofka.cityhotel.booking.domain.client.events.RemovedGuest;
 import co.com.sofka.cityhotel.booking.domain.client.events.ReplacedCreditCard;
 import co.com.sofka.cityhotel.booking.domain.generic.EventChange;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ClientBehavior extends EventChange {
@@ -20,7 +22,7 @@ public class ClientBehavior extends EventChange {
             client.clientIdentification = event.getClientIdentification();
             client.address = event.getAddress();
             client.creditCard = event.getCreditCard();
-            client.guestSet = new HashSet<>();
+            client.guestList = new ArrayList<>();
         });
 
         apply((ReplacedCreditCard event) -> {
@@ -37,7 +39,7 @@ public class ClientBehavior extends EventChange {
         });
 
         apply((AddedGuest event) -> {
-            client.guestSet.add(Guest.from(
+            client.guestList.add(Guest.from(
                     event.getGuestId(),
                     event.getGuestName(),
                     event.getGuestEmail()
@@ -45,7 +47,13 @@ public class ClientBehavior extends EventChange {
         });
 
         apply((RemovedGuest event) -> {
-            client.guestSet.removeIf(guest -> guest.identity().value().equals(event.getGuestId().value()));
+            client.guestList.removeIf(guest -> guest.identity().value().equals(event.getGuestId().value()));
+        });
+
+        apply((EditedGuest event) -> {
+            client.guestList.stream()
+                    .filter(guest -> guest.identity().value().equals(event.getGuestId().value()))
+                    .forEach(guest -> guest.updateGuestEmail(event.getGuestEmail()));
         });
     }
 }

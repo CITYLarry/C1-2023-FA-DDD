@@ -28,7 +28,7 @@ public class Guest extends Entity<GuestId> {
         return guestName.value();
     }
 
-    public void UpdateGuestName(GuestName guestName) {
+    public void updateGuestName(GuestName guestName) {
         this.guestName = guestName;
     }
 
@@ -36,7 +36,7 @@ public class Guest extends Entity<GuestId> {
         return guestEmail.value();
     }
 
-    public void UpdateGuestEmail(GuestEmail guestEmail) {
+    public void updateGuestEmail(GuestEmail guestEmail) {
         this.guestEmail = guestEmail;
     }
 }

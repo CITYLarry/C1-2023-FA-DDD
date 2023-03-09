@@ -8,8 +8,8 @@ import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientIdentifi
 import co.com.sofka.cityhotel.booking.domain.client.values.client.ClientName;
 import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreatedClient extends DomainEvent {
 
@@ -18,7 +18,7 @@ public class CreatedClient extends DomainEvent {
     private ClientIdentification clientIdentification;
     private Address address;
     private CreditCard creditCard;
-    private Set<Guest> guestSet;
+    private List<Guest> guestList;
 
     private CreatedClient() {
         super("co.com.sofka.cityhotel.booking.domain.client.events.CreatedClient");
@@ -35,7 +35,7 @@ public class CreatedClient extends DomainEvent {
         this.clientIdentification = clientIdentification;
         this.address = address;
         this.creditCard = creditCard;
-        this.guestSet = new HashSet<>();
+        this.guestList = new ArrayList<>();
     }
 
     public ClientName getClientName() {
@@ -58,7 +58,7 @@ public class CreatedClient extends DomainEvent {
         return creditCard;
     }
 
-    public Set<Guest> getGuestSet() {
-        return guestSet;
+    public List<Guest> getGuestSet() {
+        return guestList;
     }
 }

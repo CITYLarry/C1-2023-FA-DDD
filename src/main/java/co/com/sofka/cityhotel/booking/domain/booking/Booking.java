@@ -4,6 +4,7 @@ import co.com.sofka.cityhotel.booking.domain.booking.entities.Payment;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Room;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Services;
 import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
+import co.com.sofka.cityhotel.booking.domain.booking.events.CheckInRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CheckOutRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
 import co.com.sofka.cityhotel.booking.domain.booking.events.FreeUpRoom;
@@ -47,10 +48,17 @@ public class Booking extends AggregateRoot<BookingId> {
         return booking;
     }
 
-    public void assignRoom(RoomId roomId, RoomNumber roomNumber) {
+    public void assignRoom(RoomId roomId, RoomNumber roomNumber, BookingId bookingId) {
         Objects.requireNonNull(roomId);
         Objects.requireNonNull(roomNumber);
-        appendChange(new AssignedRoom(roomId, roomNumber)).apply();
+        Objects.requireNonNull(bookingId);
+        appendChange(new AssignedRoom(roomId, roomNumber, bookingId)).apply();
+    }
+
+    public void checkInRoom(RoomId roomId, RoomAvailable roomAvailable){
+        Objects.requireNonNull(roomId);
+        Objects.requireNonNull(roomAvailable);
+        appendChange(new CheckInRoom(roomId, roomAvailable)).apply();
     }
 
     public void checkOutRoom(RoomId roomId, BookingId bookingId) {
@@ -58,15 +66,15 @@ public class Booking extends AggregateRoot<BookingId> {
         appendChange(new CheckOutRoom(roomId, bookingId)).apply();
     }
 
-    public void hireService(ServiceType serviceType) {
-        Objects.requireNonNull(serviceType);
-        appendChange(new HiredService(serviceType)).apply();
-    }
-
     public void freeUpRoom(RoomId roomId, RoomAvailable roomAvailable) {
         Objects.requireNonNull(roomId);
         Objects.requireNonNull(roomAvailable);
         appendChange(new FreeUpRoom(roomId, roomAvailable)).apply();
+    }
+
+    public void hireService(ServiceType serviceType) {
+        Objects.requireNonNull(serviceType);
+        appendChange(new HiredService(serviceType)).apply();
     }
 
     //Getters methods

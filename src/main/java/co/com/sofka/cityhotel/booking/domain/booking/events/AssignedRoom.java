@@ -1,7 +1,7 @@
 package co.com.sofka.cityhotel.booking.domain.booking.events;
 
+import co.com.sofka.cityhotel.booking.domain.booking.values.identities.BookingId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.RoomId;
-import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomAvailable;
 import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomNumber;
 import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;
 
@@ -9,17 +9,19 @@ public class AssignedRoom extends DomainEvent {
 
     private RoomId roomId;
     private RoomNumber roomNumber;
-    private RoomAvailable roomAvailable;
+
+    private BookingId bookingId;
+
 
     private AssignedRoom() {
         super("co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom");
     }
 
-    public AssignedRoom(RoomId roomId, RoomNumber roomNumber) {
+    public AssignedRoom(RoomId roomId, RoomNumber roomNumber, BookingId bookingId) {
         super("co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom");
         this.roomId = roomId;
         this.roomNumber = roomNumber;
-        this.roomAvailable = new RoomAvailable(false);
+        this.bookingId = bookingId;
     }
 
     public RoomId getRoomId() {
@@ -30,7 +32,7 @@ public class AssignedRoom extends DomainEvent {
         return roomNumber;
     }
 
-    public RoomAvailable getRoomAvailable() {
-        return roomAvailable;
+    public BookingId getBookingId() {
+        return bookingId;
     }
 }

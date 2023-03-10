@@ -76,6 +76,5 @@ public class AssingRoomUseCaseTest {
 
         Assertions.assertEquals("testBookingId", guest.aggregateRootId());
         Assertions.assertEquals("testRoomNumber", guest.getRoomNumber().value());
-        Assertions.assertEquals(false, guest.getRoomAvailable().value());
     }
 }

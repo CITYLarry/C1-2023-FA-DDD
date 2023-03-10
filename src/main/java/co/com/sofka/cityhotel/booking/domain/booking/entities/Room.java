@@ -14,14 +14,13 @@ public class Room extends Entity<RoomId> {
         super(roomId);
     }
 
-    private Room(RoomId roomId, RoomNumber roomNumber, RoomAvailable roomAvailable) {
+    private Room(RoomId roomId, RoomNumber roomNumber) {
         super(roomId);
         this.roomNumber = roomNumber;
-        this.roomAvailable = roomAvailable;
     }
 
-    public static Room from(RoomId roomId, RoomNumber roomNumber, RoomAvailable roomAvailable) {
-        return new Room(roomId, roomNumber, roomAvailable);
+    public static Room from(RoomId roomId, RoomNumber roomNumber) {
+        return new Room(roomId, roomNumber);
     }
 
     public String roomNumber() {

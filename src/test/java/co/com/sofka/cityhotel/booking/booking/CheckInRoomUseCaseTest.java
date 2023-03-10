@@ -1,19 +1,17 @@
 package co.com.sofka.cityhotel.booking.booking;
 
-import co.com.sofka.cityhotel.booking.business.booking.CheckOutRoomUseCase;
+import co.com.sofka.cityhotel.booking.business.booking.AssignRoomUseCase;
+import co.com.sofka.cityhotel.booking.business.booking.CheckInRoomUseCase;
 import co.com.sofka.cityhotel.booking.business.commons.EventsRepository;
-import co.com.sofka.cityhotel.booking.domain.booking.commands.CheckOutRoomCommand;
+import co.com.sofka.cityhotel.booking.domain.booking.commands.AssignRoomCommand;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Payment;
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Services;
 import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
-import co.com.sofka.cityhotel.booking.domain.booking.events.CheckOutRoom;
+import co.com.sofka.cityhotel.booking.domain.booking.events.CheckInRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
-import co.com.sofka.cityhotel.booking.domain.booking.values.identities.BookingId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.PaymentId;
-import co.com.sofka.cityhotel.booking.domain.booking.values.identities.RoomId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.ServiceId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.payment.PaymentAmount;
-import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomNumber;
 import co.com.sofka.cityhotel.booking.domain.booking.values.service.ServiceType;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
 import co.com.sofka.cityhotel.booking.domain.generic.DomainEvent;
@@ -31,17 +29,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-public class CheckOutRoomUseCaseTest {
+public class CheckInRoomUseCaseTest {
 
     @Mock
     private EventsRepository eventsRepository;
 
     @InjectMocks
-    private CheckOutRoomUseCase checkOutRoomUseCase;
+    private AssignRoomUseCase assignRoomUseCase;
 
-    @DisplayName("Chekc out room test")
+    @InjectMocks
+    private CheckInRoomUseCase checkInRoomUseCase;
+
+    @DisplayName("Check in room test")
     @Test
-    void testCheckOutRoom() {
+    void testCheckInRoom() {
 
         CreatedBooking createdBooking = new CreatedBooking(
                 ClientId.of("testClientId"),
@@ -56,34 +57,34 @@ public class CheckOutRoomUseCaseTest {
         );
         createdBooking.setAggregateRootId("testBookingId");
 
-        AssignedRoom assignedRoom = new AssignedRoom(
-                RoomId.of("testRoomId"),
-                new RoomNumber("testRoomId"),
-                BookingId.of("testBookingId")
-        );
-
-        CheckOutRoomCommand checkOutRoomCommand = new CheckOutRoomCommand(
+        AssignRoomCommand assignRoomCommand = new AssignRoomCommand(
                 "testRoomId",
+                "testRoomNumber",
                 "testBookingId"
         );
 
-        Mockito.when(eventsRepository.findAggregateRootId(checkOutRoomCommand.getBookingId()))
+        Mockito.when(eventsRepository.findAggregateRootId(assignRoomCommand.getBookingId()))
                 .thenAnswer(invocationOnMock -> {
                     List<DomainEvent> bookingEvents = new ArrayList<>();
                     bookingEvents.add(createdBooking);
-                    bookingEvents.add(assignedRoom);
                     return bookingEvents;
                 });
 
-        Mockito.when(eventsRepository.saveEvent(ArgumentMatchers.any(CheckOutRoom.class)))
+        Mockito.when(eventsRepository.saveEvent(ArgumentMatchers.any(AssignedRoom.class)))
                 .thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
 
-        List<DomainEvent> result = checkOutRoomUseCase.apply(checkOutRoomCommand);
+        List<DomainEvent> result = assignRoomUseCase.apply(assignRoomCommand);
 
-        Assertions.assertEquals(1, result.size());
+        AssignedRoom assignedRoom = (AssignedRoom) result.get(0);
 
-        CheckOutRoom checkOutRoom = (CheckOutRoom) result.get(0);
+        Mockito.when(eventsRepository.saveEvent(ArgumentMatchers.any(CheckInRoom.class)))
+                .thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
 
-        Assertions.assertEquals("testRoomId", checkOutRoom.getRoomId().value());
+        List<DomainEvent> result2 = checkInRoomUseCase.apply(assignedRoom);
+
+        CheckInRoom checkInRoom = (CheckInRoom) result2.get(0);
+
+        Assertions.assertEquals(true, checkInRoom.getRoomAvailable().value());
+        Assertions.assertEquals(assignedRoom.getRoomId().value(), checkInRoom.getRoomId().value());
     }
 }

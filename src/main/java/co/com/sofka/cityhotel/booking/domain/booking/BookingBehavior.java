@@ -2,6 +2,7 @@ package co.com.sofka.cityhotel.booking.domain.booking;
 
 import co.com.sofka.cityhotel.booking.domain.booking.entities.Room;
 import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
+import co.com.sofka.cityhotel.booking.domain.booking.events.CheckInRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CheckOutRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
 import co.com.sofka.cityhotel.booking.domain.booking.events.FreeUpRoom;
@@ -27,10 +28,16 @@ public class BookingBehavior extends EventChange {
             booking.roomList.add(
                     Room.from(
                             event.getRoomId(),
-                            event.getRoomNumber(),
-                            event.getRoomAvailable()
+                            event.getRoomNumber()
                     )
             );
+        });
+
+        apply((CheckInRoom event) -> {
+            booking.roomList.stream()
+                   .filter(room -> room.identity().equals(event.getRoomId()))
+                   .findFirst()
+                   .ifPresent(room -> room.checkOutRoom(event.getRoomAvailable()));
         });
 
         apply((CheckOutRoom event) -> {

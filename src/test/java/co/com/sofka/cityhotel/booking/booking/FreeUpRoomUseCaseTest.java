@@ -10,6 +10,7 @@ import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CheckOutRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
 import co.com.sofka.cityhotel.booking.domain.booking.events.FreeUpRoom;
+import co.com.sofka.cityhotel.booking.domain.booking.values.identities.BookingId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.PaymentId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.RoomId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.ServiceId;
@@ -63,7 +64,8 @@ public class FreeUpRoomUseCaseTest {
 
         AssignedRoom assignedRoom = new AssignedRoom(
                 RoomId.of("testRoomId"),
-                new RoomNumber("testRoomId")
+                new RoomNumber("testRoomId"),
+                BookingId.of("testBookingId")
         );
 
         CheckOutRoomCommand checkOutRoomCommand = new CheckOutRoomCommand(

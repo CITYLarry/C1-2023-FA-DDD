@@ -22,10 +22,11 @@ public class AssignRoomUseCase implements CommandUseCase<AssignRoomCommand> {
     @Override
     public List<DomainEvent> apply(AssignRoomCommand command) {
         List<DomainEvent> result = eventsRepository.findAggregateRootId(command.getBookingId());
-        Booking booking = Booking.from(BookingId.of(command.bookingId), result);
+        Booking booking = Booking.from(BookingId.of(command.getBookingId()), result);
         booking.assignRoom(
                 RoomId.of(command.getRoomId()),
-                new RoomNumber(command.getRoomNumber())
+                new RoomNumber(command.getRoomNumber()),
+                BookingId.of(command.getBookingId())
         );
         return booking.getUncommittedChanges().stream()
                 .map(eventsRepository::saveEvent)

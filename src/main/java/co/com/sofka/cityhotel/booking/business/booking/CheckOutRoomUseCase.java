@@ -23,7 +23,7 @@ public class CheckOutRoomUseCase implements CommandUseCase<CheckOutRoomCommand> 
     public List<DomainEvent> apply(CheckOutRoomCommand command) {
         List<DomainEvent> result = eventsRepository.findAggregateRootId(command.getBookingId());
         Booking booking = Booking.from(BookingId.of(command.getBookingId()), result);
-        booking.checkOutRoom(RoomId.of(command.getRoomId()));
+        booking.checkOutRoom(RoomId.of(command.getRoomId()), BookingId.of(command.getBookingId()));
         return booking.getUncommittedChanges().stream()
                 .map(eventsRepository::saveEvent)
                 .toList();

@@ -6,9 +6,11 @@ import co.com.sofka.cityhotel.booking.domain.booking.entities.Services;
 import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CheckOutRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
+import co.com.sofka.cityhotel.booking.domain.booking.events.FreeUpRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.HiredService;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.BookingId;
 import co.com.sofka.cityhotel.booking.domain.booking.values.identities.RoomId;
+import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomAvailable;
 import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomNumber;
 import co.com.sofka.cityhotel.booking.domain.booking.values.service.ServiceType;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
@@ -51,14 +53,20 @@ public class Booking extends AggregateRoot<BookingId> {
         appendChange(new AssignedRoom(roomId, roomNumber)).apply();
     }
 
-    public void checkOutRoom(RoomId roomId) {
+    public void checkOutRoom(RoomId roomId, BookingId bookingId) {
         Objects.requireNonNull(roomId);
-        appendChange(new CheckOutRoom(roomId)).apply();
+        appendChange(new CheckOutRoom(roomId, bookingId)).apply();
     }
 
     public void hireService(ServiceType serviceType) {
         Objects.requireNonNull(serviceType);
         appendChange(new HiredService(serviceType)).apply();
+    }
+
+    public void freeUpRoom(RoomId roomId, RoomAvailable roomAvailable) {
+        Objects.requireNonNull(roomId);
+        Objects.requireNonNull(roomAvailable);
+        appendChange(new FreeUpRoom(roomId, roomAvailable)).apply();
     }
 
     //Getters methods

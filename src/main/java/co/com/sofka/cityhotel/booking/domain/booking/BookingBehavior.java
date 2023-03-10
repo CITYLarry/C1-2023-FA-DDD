@@ -4,7 +4,9 @@ import co.com.sofka.cityhotel.booking.domain.booking.entities.Room;
 import co.com.sofka.cityhotel.booking.domain.booking.events.AssignedRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CheckOutRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.CreatedBooking;
+import co.com.sofka.cityhotel.booking.domain.booking.events.FreeUpRoom;
 import co.com.sofka.cityhotel.booking.domain.booking.events.HiredService;
+import co.com.sofka.cityhotel.booking.domain.booking.values.room.RoomAvailable;
 import co.com.sofka.cityhotel.booking.domain.client.values.identities.ClientId;
 import co.com.sofka.cityhotel.booking.domain.generic.EventChange;
 
@@ -33,6 +35,13 @@ public class BookingBehavior extends EventChange {
 
         apply((CheckOutRoom event) -> {
             booking.roomList.removeIf(room -> room.identity().equals(event.getRoomId()));
+        });
+
+        apply((FreeUpRoom event) -> {
+            booking.roomList.stream()
+                    .filter(room -> room.identity().equals(event.getRoomId()))
+                    .findFirst()
+                    .ifPresent(room -> room.checkOutRoom(event.getRoomAvailable()));
         });
 
         apply((HiredService event) -> {

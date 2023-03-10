@@ -1,4 +1,4 @@
-<img src="resources/logo.png" width="300px">
+<img src="resources/banner.png" width="300px">
 
 # SofkaU Training League - DDD Challenge.
 
